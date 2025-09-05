@@ -18,16 +18,18 @@ actor client
 actor server
 control nameserver
 
-client -> nameserver: connect
-nameserver -> client:
+client -> nameserver : connect("svc://server name")
+nameserver -> client : reply
 
-server -> nameserver:bind
-nameserver -> nameserver: allocate address
-nameserver -> server: 
-server -> server: bind
-server -> nameserver: done
-nameserver -> client: file
-client -> server: connect
+server -> nameserver : bind("svc://server name")
+nameserver -> nameserver : allocate address
+nameserver -> server : reply("file:// file path""tcp://ip:port") 
+server -> server : bind("file:// file path""tcp://ip:port")
+server -> nameserver : done
+nameserver -> client : reply("file:// file path")
+client -> server : connect("file:// file path")
+client -> client : onOnline()
+server -> server : onOnline()
 
 @enduml
 ```
