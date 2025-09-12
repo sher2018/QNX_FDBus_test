@@ -11,8 +11,7 @@ option(ENABLE_PROTOBUF_LIB "Enable protobuf library" OFF)
 # set QNX compiler
 if(ENABLE_QNX_COMPILER) 
     if(NOT DEFINED ENV{QNX_HOST} OR NOT DEFINED ENV{QNX_TARGET})
-        message(FATAL_ERROR "QNX_HOST or QNX_TARGET environment variables are not set!")
-        message(FATAL_ERROR "source qnxsdp-env.sh first!")
+        message(FATAL_ERROR "QNX_HOST or QNX_TARGET environment variables are not set! source qnxsdp-env.sh first!")
     endif()
 
     set(CMAKE_SYSTEM_NAME QNX)
@@ -73,6 +72,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src/client
     ${CMAKE_SOURCE_DIR}/src/server
     ${CMAKE_SOURCE_DIR}/src/name_server
+    ${CMAKE_SOURCE_DIR}/src/host_server
 )
 
 # set libraries
@@ -88,16 +88,28 @@ add_library(${PROJECT_NAME}_name_server SHARED
     ${CMAKE_SOURCE_DIR}/src/name_server/CTestQnxFdbusNameServer.cpp
 )
 
+add_library(${PROJECT_NAME}_host_server SHARED
+    ${CMAKE_SOURCE_DIR}/src/host_server/CTestQnxFdbusHostServer.cpp
+)
+
 # set executable files
-add_executable(${PROJECT_NAME}_main
+if(CTEST_QNX_FDBUS_SERVER) 
+    set(EXECUTABLE_FILE "${PROJECT_NAME}_main_server")
+elseif(CTEST_QNX_FDBUS_CLIENT)
+    set(EXECUTABLE_FILE "${PROJECT_NAME}_main_client")
+else()
+    set(EXECUTABLE_FILE "${PROJECT_NAME}_main")
+endif()
+
+add_executable(${EXECUTABLE_FILE}
     ${CMAKE_SOURCE_DIR}/src/main.cpp
 )
 
 # set link libraries 
-target_link_directories(${PROJECT_NAME}_main PRIVATE ${CMAKE_SOURCE_DIR}/build)
+target_link_directories(${EXECUTABLE_FILE} PRIVATE ${CMAKE_SOURCE_DIR}/build)
 
-target_link_directories(${PROJECT_NAME}_main PRIVATE ${FDBUS_LIB_PATH}/lib)
+target_link_directories(${EXECUTABLE_FILE} PRIVATE ${FDBUS_LIB_PATH}/lib)
 
 if (ENABLE_PROTOBUF_LIB)
-    target_link_directories(${PROJECT_NAME}_main PRIVATE ${PROTOBUF_LIB_PATH}/lib)
+    target_link_directories(${EXECUTABLE_FILE} PRIVATE ${PROTOBUF_LIB_PATH}/lib)
 endif() # ENABLE_PROTOBUF_LIB

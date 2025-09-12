@@ -10,12 +10,17 @@
 #include "fdbus.h"
 
 #include "CTestQnxFdbusServer.h"
+#include "CTestQnxFdbusServerMain.hpp"
 #include "CTestQnxFdbusClient.h"
+#include "CTestQnxFdbusClientMain.hpp"
 #include "CTestQnxFdbusNameServer.h"
+#include "CTestQnxFdbusHostServer.h"
 
 int main(int /*argc*/, char* /*argv*/[])
 {
-    while (1) {
-        std::cout << "QNX FDBus Test !" << std::endl;
-    }
+#ifdef CTEST_QNX_FDBUS_SERVER
+    return testQnxFdbusServerMain();
+#elif defined CTEST_QNX_FDBUS_CLIENT
+    return testQnxFdbusClientMain();
+#endif
 }

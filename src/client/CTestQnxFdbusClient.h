@@ -6,16 +6,22 @@
 #ifndef CTESTQNXFDBUSCLIENT_H
 #define CTESTQNXFDBUSCLIENT_H
 
+#include "fdbus.h"
+
 namespace test {
 namespace client {
 
-class CTestQnxFdbusClient 
+class CTestQnxFdbusClient : public ipc::fdbus::CBaseServer 
 {
 public:
-    CTestQnxFdbusClient();
+    CTestQnxFdbusClient(const char *name, ipc::fdbus::CBaseWorker *worker = nullptr);
     ~CTestQnxFdbusClient();
 
-    void testQnxFdbusClientSend();
+protected:
+    void onOnline(const ipc::fdbus::CFdbOnlineInfo &info);
+    void onOffline(const ipc::fdbus::CFdbOnlineInfo &info);
+    void onInvoke(ipc::fdbus::CBaseJob::Ptr &msg_ref);
+    void onBroadcast(ipc::fdbus::CBaseJob::Ptr &msg_ref);
 };
 }; /* client */
 } /* test */

@@ -6,16 +6,17 @@
 #ifndef CTESTQNXFDBUSNAMESERVER_H
 #define CTESTQNXFDBUSNAMESERVER_H
 
+#include "fdbus.h"
+
 namespace test {
 namespace server {
 
-class CTestQnxFdbusNameServer 
+class CTestQnxFdbusNameServer : public ipc::fdbus::CBaseServer
 {
 public:
     CTestQnxFdbusNameServer();
     ~CTestQnxFdbusNameServer();
 
-    void testQnxFdbusNameServerSend();
 };
 }; /* server */
 } /* test */

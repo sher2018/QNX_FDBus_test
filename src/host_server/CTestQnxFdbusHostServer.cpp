@@ -3,17 +3,17 @@
  * All rights reserved.
  */
 
-#include "CTestQnxFdbusNameServer.h"
+#include "CTestQnxFdbusHostServer.h"
 
 namespace test {
 namespace server {
 
-CTestQnxFdbusNameServer::CTestQnxFdbusNameServer()
+CTestQnxFdbusHostServer::CTestQnxFdbusHostServer()
 {
 
 }
 
-CTestQnxFdbusNameServer::~CTestQnxFdbusNameServer()
+CTestQnxFdbusHostServer::~CTestQnxFdbusHostServer()
 {
 
 }
