@@ -5,10 +5,8 @@ QNX 8.0
 FDBus v5.4.0
 
 ### compile
-> mkdir build
-> cd build
-> cmake ../
-> make
+> source /[your sdp path]/qnxsdp-env.sh
+> sh build.sh
 
 ### sequence diagram
 
